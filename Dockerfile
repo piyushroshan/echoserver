@@ -1,6 +1,6 @@
 FROM golang:alpine AS build
 WORKDIR /build
-COPY *go* .
+COPY *go* ./
 RUN go mod tidy
 RUN go build -o main .
 

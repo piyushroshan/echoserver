@@ -24,9 +24,9 @@ func echoHandler(w http.ResponseWriter, r *http.Request) {
 	data := make(map[string]interface{})
 	err := json.NewDecoder(r.Body).Decode(&data)
 	if err != nil {
-		w.Write([]byte(err.Error()))
+		log.Println("Error decoding body: ", err)
 	}
-	log.Print(response)
+	log.Println(response)
 	json.NewEncoder(w).Encode(response)
 }
 
@@ -46,7 +46,7 @@ func main() {
 	})
 	router.HandleFunc("/", echoHandler)
 	router.HandleFunc("/*", echoHandler)
-	port := os.Getenv("ECHOPORT")
+	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8081"
 	}

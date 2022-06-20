@@ -1,0 +1,9 @@
+service_name: goecho
+reporting:
+  endpoint: http://TPA_HOST:4317 # update to point to a TPA
+opa:
+  endpoint: http://TPA_HOST:8181/ # update to point to a TPA
+blocking_config:
+  enabled: false
+  remote_config:
+    endpoint: TPA_HOST:5441 # update to point to a TPA

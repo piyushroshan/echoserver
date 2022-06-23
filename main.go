@@ -27,6 +27,7 @@ func echoHandler(w http.ResponseWriter, r *http.Request) {
 		log.Println("Error decoding body: ", err)
 	}
 	log.Println(response)
+	w.Header().Add("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(response)
 }
 
@@ -42,6 +43,7 @@ func main() {
 
 	router.HandleFunc("/api/health", func(w http.ResponseWriter, r *http.Request) {
 		// an example API handler
+		w.Header().Add("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(map[string]bool{"ok": true})
 	})
 	router.HandleFunc("/", echoHandler)

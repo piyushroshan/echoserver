@@ -2,10 +2,12 @@ package main
 
 import (
 	"encoding/json"
+	"flag"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 	"time"
 
 	"github.com/Traceableai/goagent"
@@ -31,6 +33,14 @@ func echoHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(response)
 }
 
+var (
+	port *int
+)
+
+func init() {
+	port = flag.Int("port", 3000, "port number")
+}
+
 func main() {
 	cfg := config.Load()
 	cfg.Tracing.ServiceName = config.String("goservice")
@@ -48,13 +58,14 @@ func main() {
 	})
 	router.HandleFunc("/", echoHandler)
 	router.HandleFunc("/*", echoHandler)
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "8081"
+	porti := os.Getenv("PORT")
+	flag.Parse()
+	if porti == "" {
+		porti = strconv.Itoa(*port)
 	}
 	srv := &http.Server{
 		Handler: router,
-		Addr:    "0.0.0.0:" + port,
+		Addr:    "0.0.0.0:" + porti,
 		// Good practice: enforce timeouts for servers you create!
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,

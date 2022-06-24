@@ -28,6 +28,7 @@ func echoHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Println("Error decoding body: ", err)
 	}
+        response["data"] = data
 	log.Println(response)
 	w.Header().Add("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(response)

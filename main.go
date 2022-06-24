@@ -33,7 +33,7 @@ func echoHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	response["data"] = data
 	str_data := fmt.Sprintf("%v", data)
-	reg, _ := regexp.Compile("(sleep)")
+	reg, _ := regexp.Compile("(?i:(sleep|wait|receive))")
 	if reg.FindString(str_data) != "" {
 		log.Println("Sleeping")
 		time.Sleep(time.Second * 5)

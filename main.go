@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"regexp"
 	"strconv"
 	"time"
 
@@ -27,9 +28,18 @@ func echoHandler(w http.ResponseWriter, r *http.Request) {
 	err := json.NewDecoder(r.Body).Decode(&data)
 	if err != nil {
 		log.Println("Error decoding body: ", err)
+	} else {
+		log.Println("Body: ", data)
 	}
-        response["data"] = data
-	log.Println(response)
+	response["data"] = data
+	str_data := fmt.Sprintf("%v", data)
+	reg, _ := regexp.Compile("(sleep)")
+	if reg.FindString(str_data) != "" {
+		log.Println("Sleeping")
+		time.Sleep(time.Second * 5)
+	} else {
+		log.Println("Not sleeping")
+	}
 	w.Header().Add("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(response)
 }
